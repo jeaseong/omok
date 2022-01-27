@@ -6,6 +6,22 @@ for (let i = 0; i < 15; i++) {
   map.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
+// reset
+const resetGame = () => {
+  // map2차원 배열의 데이터 초기화
+  map.forEach((item) => {
+    for (let i = 0; i < item.length; i++) {
+      item[i] = 0;
+    }
+  });
+  const row = document.querySelectorAll(".row");
+  row.forEach((item) => {
+    panel.removeChild(item);
+  });
+  turn = 2;
+  makeBoard();
+};
+
 // 승자 판별
 const pickWinner = (array, stone) => {
   if (stone === 1) return array.join("").includes("11111") ? stone : "";
@@ -66,6 +82,7 @@ const checkBoard = (row, col, t) => {
     checkPositiveCross(row, col, t) === 1
   ) {
     alert("흑돌 승리");
+    resetGame();
   } else if (
     checkRow(row, t) === 2 ||
     checkCol(col, t) === 2 ||
@@ -73,12 +90,14 @@ const checkBoard = (row, col, t) => {
     checkPositiveCross(row, col, t) === 2
   ) {
     alert("백돌 승리");
+    resetGame();
   }
 };
 
 const makeBoard = () => {
   // 보드 만들기
   const p = document.querySelector("p");
+  p.innerHTML = "흑돌 먼저";
   for (let i = 0; i < 15; i++) {
     // 로우 생성
     const rowTag = document.createElement("div");
