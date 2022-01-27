@@ -80,24 +80,48 @@ const makeBoard = () => {
     for (let j = 0; j < 15; j++) {
       const colTag = document.createElement("div");
       colTag.classList.add("col");
-      colTag.addEventListener("click", () => {
-        if (turn === 1) {
-          p.innerText = "흑돌 차례";
-          turn = 2;
-        } else if (turn === 2) {
-          turn = 1;
-          p.innerText = "백돌 차례";
-        }
 
-        map[i][j] = turn;
-
-        if (map[i][j] === 1) {
-          colTag.classList.add("black");
-        } else if (map[i][j] === 2) {
-          colTag.classList.add("white");
+      colTag.addEventListener("mouseover", () => {
+        if (map[i][j] === 0) {
+          if (turn === 2) {
+            colTag.classList.add("black");
+          } else if (turn === 1) {
+            colTag.classList.add("white");
+          }
         }
-        checkBoard(i, j, turn);
       });
+      colTag.addEventListener("mouseleave", () => {
+        if (map[i][j] === 0) {
+          if (turn === 2) {
+            colTag.classList.remove("black");
+          } else if (turn === 1) {
+            colTag.classList.remove("white");
+          }
+        }
+      });
+
+      colTag.addEventListener("click", (e) => {
+        if (map[i][j] === 0) {
+          if (turn === 1) {
+            p.innerText = "흑돌 차례";
+            turn = 2;
+          } else if (turn === 2) {
+            turn = 1;
+            p.innerText = "백돌 차례";
+          }
+
+          map[i][j] = turn;
+
+          if (map[i][j] === 1) {
+            colTag.classList.add("black");
+          } else if (map[i][j] === 2) {
+            colTag.classList.add("white");
+          }
+
+          checkBoard(i, j, turn);
+        }
+      });
+
       rowTag.appendChild(colTag);
     }
     panel.appendChild(rowTag);
