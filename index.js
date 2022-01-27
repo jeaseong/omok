@@ -6,18 +6,17 @@ for (let i = 0; i < 15; i++) {
   map.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
-const resetGame = () => {
-  console.log(1);
-};
-
+// 승자 판별
 const pickWinner = (array, stone) => {
   if (stone === 1) return array.join("").includes("11111") ? stone : "";
   else if (stone === 2) return array.join("").includes("22222") ? stone : "";
 };
 
+// 가로 돌 구하기
 const checkRow = (r, color) => {
   return pickWinner(map[r], color);
 };
+//세로 돌 구하기
 const checkCol = (c, color) => {
   let check = [];
   for (let i = 0; i < 15; i++) {
@@ -26,6 +25,7 @@ const checkCol = (c, color) => {
   return pickWinner(check, color);
 };
 
+//하강 대각 구하기
 const checkNagativeCross = (r, c, color) => {
   let check = [];
   for (let i = 0; i < 9; i++) {
@@ -40,6 +40,8 @@ const checkNagativeCross = (r, c, color) => {
   }
   return pickWinner(check, color);
 };
+
+// 상승 대각 구하기
 const checkPositiveCross = (r, c, color) => {
   let check = [];
   for (let i = 0; i < 9; i++) {
@@ -55,32 +57,38 @@ const checkPositiveCross = (r, c, color) => {
   return pickWinner(check, color);
 };
 
+// 승리 조건이 있는지 확인한다.
 const checkBoard = (row, col, t) => {
   if (
     checkRow(row, t) === 1 ||
     checkCol(col, t) === 1 ||
     checkNagativeCross(row, col, t) === 1 ||
     checkPositiveCross(row, col, t) === 1
-  )
+  ) {
     alert("흑돌 승리");
-  else if (
+  } else if (
     checkRow(row, t) === 2 ||
     checkCol(col, t) === 2 ||
     checkNagativeCross(row, col, t) === 2 ||
     checkPositiveCross(row, col, t) === 2
-  )
+  ) {
     alert("백돌 승리");
+  }
 };
 
 const makeBoard = () => {
+  // 보드 만들기
   const p = document.querySelector("p");
   for (let i = 0; i < 15; i++) {
+    // 로우 생성
     const rowTag = document.createElement("div");
     rowTag.classList.add("row");
     for (let j = 0; j < 15; j++) {
+      // col 생성
       const colTag = document.createElement("div");
       colTag.classList.add("col");
 
+      // 사용자 편의를 위해 본인 차례 돌의 프리뷰를 제공
       colTag.addEventListener("mouseover", () => {
         if (map[i][j] === 0) {
           if (turn === 2) {
@@ -100,6 +108,7 @@ const makeBoard = () => {
         }
       });
 
+      // 착수 시
       colTag.addEventListener("click", (e) => {
         if (map[i][j] === 0) {
           if (turn === 1) {
